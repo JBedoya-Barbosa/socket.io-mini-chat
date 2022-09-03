@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Chat</title>
+</head>
+<body>
+    <h1>Mini Chat</h1>
+
+    <form id="myForm">
+        <div>
+            <input id="input" type="text" placeholder="Escribe un mensaje">
+            <button>Enviar ></button>
+        </div>
+    </form>
+
+    <div id="messages">
+        <ul id="messages-ul">
+            <li>Hola</li>
+        </ul>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.js" integrity="sha512-VJ6+sp2E5rFQk05caiXXzQd1wBABpjEj1r5kMiLmGAAgwPItw1YpqsCCBtq8Yr1x6C49/mTpRdXtq8O2RcZhlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        const socket = io('http://localhost:8080')
+
+        const form = document.querySelector('#myForm')
+        const messages = document.querySelector('#messages-ul')
+        const text = document.querySelector('#input')
+
+        const createMessage = (data) => {
+            return `<li>${data}</li>`
+        }
+        
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+
+            const message = {
+                name: 'client',
+                message: text.value
+            }
+
+            socket.emit('client-message', message)
+        })
+
+        socket.on('server-message', data => {
+            messages.innerHTML += `<li>${data.message}</li>`
+        })
+    </script>
+</body>
+</html>
