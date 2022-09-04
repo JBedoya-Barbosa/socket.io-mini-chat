@@ -10,6 +10,8 @@ const io = require('socket.io')(server)
 
 const PORT = process.env.PORT
 
+const name = ''
+
 app.use(cors())
 app.use(express.static(path.resolve(__dirname + '/public')))
 
